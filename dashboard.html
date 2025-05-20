@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alumni Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Welcome to Alumni Dashboard</h1>
+  <div id="alumniList">
+    <h2>Alumni List</h2>
+    <div id="alumniContainer"></div>
+  </div>
+
+  <script>
+    async function loadAlumni() {
+      let res = await fetch('fetch_alumni.php');
+      let data = await res.json();
+
+      let container = document.getElementById('alumniContainer');
+      container.innerHTML = '';
+
+      data.forEach(user => {
+        let imgSrc = user.image ? user.image : 'default-user.png';
+        container.innerHTML += `
+          <div class="alumni-card">
+            <img src="${imgSrc}" alt="${user.name}" width="100" height="100" />
+            <h3>${user.name}</h3>
+            <p>Email: ${user.email}</p>
+            <p>Batch: ${user.batch}</p>
+            <p>Branch: ${user.branch}</p>
+            <p>State: ${user.state}</p>
+          </div>
+        `;
+      });
+    }
+
+    loadAlumni();
+  </script>
+
+  <style>
+    #alumniContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .alumni-card {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      width: 200px;
+      text-align: center;
+      border-radius: 8px;
+    }
+    .alumni-card img {
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  </style>
+</body>
+</html>
